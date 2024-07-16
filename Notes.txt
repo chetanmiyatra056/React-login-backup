@@ -1,0 +1,20 @@
+npx create-react-app react-app
+
+cd react-app
+
+npm start
+
+npm install react-router-dom
+
+npm install axios
+
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/chetanmiyatra056/React-Login-Page.git
+git push -u origin master
+
+
+
+
