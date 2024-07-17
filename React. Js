@@ -1,0 +1,175 @@
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Header from "./Header";
+
+function Register() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("user-info")) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm_password, setConfirm_password] = useState("");
+
+  const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+
+  const validateForm = () => {
+    let formErrors = {};
+
+    if (!name.trim()) {
+      formErrors.name = "Username is required";
+    }
+
+    if (!email.trim()) {
+      formErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      formErrors.email = "Email address is invalid";
+    }
+
+    if (!password) {
+      formErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      formErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!confirm_password) {
+      formErrors.confirm_password = "Confirm Password is required";
+    } else if (confirm_password !== password) {
+      formErrors.confirm_password = "Passwords do not match";
+    }
+
+    setErrors(formErrors);
+
+    return Object.keys(formErrors).length === 0;
+  };
+
+  async function signUp() {
+    if (!validateForm()) {
+      return;
+    }
+
+    let item = { name, email, password, confirm_password };
+
+    let response = await fetch("http://127.0.0.1:8000/api/register", {
+      method: "POST",
+      body: JSON.stringify(item),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    let result = await response.json();
+
+    if (result.status === false) {
+      setErrors(result.error);
+      setMessage(result.message);
+    } else {
+      setErrors({});
+      setMessage("User registered successfully.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    }
+  }
+
+  function reset() {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirm_password("");
+    setErrors({});
+    setMessage("");
+  }
+
+  return (
+    <>
+      <Header />
+
+      {message && <div className="alert alert-info">{message}</div>}
+      <div className="container my-5">
+        <h1>Register Form</h1>
+        <form>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              Username
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="name"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {errors.name && <div className="text-danger">{errors.name}</div>}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {errors.email && <div className="text-danger">{errors.email}</div>}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errors.password && <div className="text-danger">{errors.password}</div>}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="confirm_password" className="form-label">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              name="confirm_password"
+              id="confirm_password"
+              value={confirm_password}
+              onChange={(e) => setConfirm_password(e.target.value)}
+            />
+            {errors.confirm_password && (
+              <div className="text-danger">{errors.confirm_password}</div>
+            )}
+          </div>
+          <button type="button" onClick={signUp} className="btn btn-primary me-2">
+            Sign Up
+          </button>
+          <button type="button" onClick={reset} className="btn btn-danger">
+            Reset
+          </button>
+          <p className="mt-2">
+            Already registered?{" "}
+            <Link className="link" to="/login">
+              Sign In
+            </Link>
+          </p>
+        </form>
+      </div>
+    </>
+  );
+}
+
+export default Register;
