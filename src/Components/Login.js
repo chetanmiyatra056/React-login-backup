@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { apiLaravel } from "./Api";
+import LogoutMiddleware from "../Middlewares/LogoutMiddleware";
 
 function Login() {
   const navigate = useNavigate();
+
+  LogoutMiddleware();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +49,7 @@ function Login() {
         localStorage.setItem("user-info", JSON.stringify(response.data));
         setTimeout(() => {
           navigate("/welcome"); // Adjust the redirect URL as needed
-        }, 2000); // Navigate to dashboard after 2 seconds
+        }, 3000); // Navigate to dashboard after 2 seconds
       }
     } else {
       setErrors(validationErrors);

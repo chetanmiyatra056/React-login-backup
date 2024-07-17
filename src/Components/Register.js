@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { apiLaravel } from "./Api";
+import LoginMiddleware from "../Middlewares/LoginMiddleware";
 
 function Register() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("user-info")) {
-      navigate("/login");
-    }
-  });
+  LoginMiddleware();
+  // useEffect(() => {
+  //   if (localStorage.getItem("user-info")) {
+  //     navigate("/login");
+  //   }
+  // });
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
