@@ -12,15 +12,14 @@ class LoginController extends Controller
 {
     function login(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i',
+            'password' => 'required|min:4|max:8',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Please fix the errors.',
+                'message' => false,
                 'error' => $validator->errors(),
                 'status' => false,
             ], 200);
@@ -28,21 +27,28 @@ class LoginController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if ($user && Hash::check($request->input('password'), $user->password)) {
+        if (!$user) {
             return response()->json([
-                'message' => 'User logged in successfully.',
-                'status' => true,
-                'data' => $user,
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Invalid email or password.',
+                'message' => 'Email not found!',
                 'status' => false,
-                'error' => [
-                    'email' => ['Invalid email or password.'],
-                    'password' => ['Invalid email or password.'],
-                ],
+                'error' => false,
             ], 200);
         }
+
+
+        if (!Hash::check($request->input('password'), $user->password)) {
+            return response()->json([
+                'message' => 'Password does not match!',
+                'status' => false,
+                'error' => false,
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'User logged in successfully.',
+            'status' => true,
+            'data' => $user,
+        ], 200);
+
     }
 }
