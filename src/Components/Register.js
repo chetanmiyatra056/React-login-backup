@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
-
-// import { Link } from 'react-router-dom'
+import { apiLaravel } from "./Api";
 
 function Register() {
   const navigate = useNavigate();
@@ -20,36 +19,56 @@ function Register() {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
 
+  const validate = () => {
+    const newErrors = {};
+
+    if (!name) {
+      newErrors.name = ["Username is required"];
+    }
+
+    if (!email) {
+      newErrors.email = ["Email is required"];
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = ["Email address is invalid"];
+    }
+
+    if (!password) {
+      newErrors.password = ["Password is required"];
+    } else if (password.length < 4) {
+      newErrors.password = ["Password must be at least 4 characters"];
+    }
+
+    if (!confirm_password) {
+      newErrors.confirm_password = ["Confirm Password is required"];
+    } else if (password !== confirm_password) {
+      newErrors.confirm_password = ["Passwords do not match"];
+    }
+
+    return newErrors;
+  };
+
+
   async function signUp() {
-    let item = { name, email, password, confirm_password };
-    // console.warn(item);
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length === 0) {
+      let item = { name, email, password, confirm_password };
+      let response = await apiLaravel("/register", {
+        method: "POST",
+        body: JSON.stringify(item),
+      });
 
-    // let result = await fetch("http://127.0.0.1:8000/api/register", {
-    let response = await fetch("http://127.0.0.1:8000/api/register", {
-      method: "POST",
-      body: JSON.stringify(item),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-
-    // result = await result.json();
-    // console.warn("result",result)
-    // localStorage.setItem("user-info", JSON.stringify(result));
-    // navigate("/login");
-    let result = await response.json();
-
-    if (result.status === false) {
-      setErrors(result.error);
-      setMessage(result.message);
+      if (response.status === false) {
+        setErrors(response.error);
+        setMessage(response.message);
+      } else {
+        setErrors({});
+        setMessage("User registered successfully.");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      }
     } else {
-      setErrors({});
-      setMessage("User registered successfully.");
-      // localStorage.setItem("user-info", JSON.stringify(result.data));
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000); // Navigate to login after 2 seconds
+      setErrors(validationErrors);
     }
   }
 
