@@ -41,6 +41,11 @@ export default function Header() {
                       Profile
                     </Link>
                   </li>
+                  <li className="nav-item">
+                    <Link className="nav-link active" to="/password">
+                      Password
+                    </Link>
+                  </li>
                 </>
               ) : (
                 <>

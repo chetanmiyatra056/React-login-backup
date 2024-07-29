@@ -9,6 +9,8 @@ import React from "react";
 import PrivateRoute from "./Middleware/PrivateRoute";
 import PublicRoute from "./Middleware/PublicRoute";
 import Profile from "./Components/Profile";
+import Password from "./Components/Password";
+
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
             <Route path="/welcome" element={<Welcome />} />
 
             <Route path="/profile" element={<Profile />} />
+
+            <Route path="/password" element={<Password />} />
           </Route>
         </Routes>
 
