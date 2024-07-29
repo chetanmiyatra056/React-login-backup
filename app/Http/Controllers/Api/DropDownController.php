@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cities;
 use App\Models\Countries;
 use App\Models\States;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DropDownController extends Controller
@@ -26,6 +27,10 @@ class DropDownController extends Controller
         // ], 200);
     }
 
+    public function country($id)
+    {
+        return Countries::find($id);
+    }
     public function states($id)
     {
         $states = States::select(
@@ -38,6 +43,11 @@ class DropDownController extends Controller
         return response()->json($states);
     }
 
+    public function state($id)
+    {
+        return States::find($id);
+    }
+
     public function cities($id)
     {
         $cities = Cities::select(
@@ -48,5 +58,30 @@ class DropDownController extends Controller
             ->get();
 
         return response()->json($cities);
+    }
+
+    public function city($id)
+    {
+        return Cities::find($id);
+    }
+
+    public function dropdown($id)
+    {
+        $drop = User::select(
+            'countries.id as countries_id',
+            'countries.name as countries_name',
+            'states.id as states_id',
+            'states.name as states_name',
+            'cities.id as cities_id',
+            'cities.name as cities_name',
+        )
+            ->join('countries', 'users.countries', '=', 'countries.id')
+            ->join('states', 'users.states', '=', 'states.id')
+            ->join('cities', 'users.cities', '=', 'cities.id')
+            ->where('users.id', $id)
+            ->first();
+
+
+        return response()->json($drop);
     }
 }
