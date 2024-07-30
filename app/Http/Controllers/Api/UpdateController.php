@@ -23,8 +23,8 @@ class UpdateController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:users',
-            'email' => 'required|unique:users|regex:/(.+)@(.+)\.(.+)/i',
+            'name' => 'required|unique:users,name,' . $id,
+            'email' => 'required|unique:users,email,' . $id . '|regex:/(.+)@(.+)\.(.+)/i',
             'countriesid' => 'required',
             'statesid' => 'required',
             'citiesid' => 'required',
@@ -39,6 +39,13 @@ class UpdateController extends Controller
         }
 
         $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+                'status' => false,
+            ], 404);
+        }
+
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->countries = $request->input('countriesid');
