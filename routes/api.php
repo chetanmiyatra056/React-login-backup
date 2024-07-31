@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\DropDownController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\ReactController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\TestController;
@@ -42,6 +43,8 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/user/{user}', [UpdateController::class, 'getuser']);
 
 Route::post('/update/{user}', [UpdateController::class, 'update']);
+
+Route::post('/password/{user}', [PasswordController::class, 'upassword']);
 
 
 // Countries, States and Cities DropDown Apis

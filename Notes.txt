@@ -16,6 +16,8 @@ php artisan make:controller Api\LoginController
 
 php artisan make:controller Api\UpdateController
 
+php artisan make:controller Api\PasswordController
+
 php artisan make:controller Api\DropDownController
 
 
