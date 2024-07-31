@@ -46,6 +46,11 @@ export default function Header() {
                       Password
                     </Link>
                   </li>
+                  <li className="nav-item">
+                    <Link className="nav-link active" to="/Test">
+                      Test
+                    </Link>
+                  </li>
                 </>
               ) : (
                 <>

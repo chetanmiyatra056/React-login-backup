@@ -1,86 +1,311 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// import React, { useEffect, useState } from "react";
+// import Header from "./Header";
+// import { apiLaravel } from "../Utils/Apiurl";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+
+// function Test() {
+//     let ls = JSON.parse(localStorage.getItem("user-info"));
+
+//     const navigate = useNavigate();
+
+//     const [dropdownData, setDropdownData] = useState(null);
+//     const [errors, setErrors] = useState({});
+//     const [message, setMessage] = useState("");
+
+//     const [countries, setCountries] = useState([]);
+//     const [countriesid, setCountriesid] = useState(ls.countries);
+
+//     const [states, setStates] = useState([]);
+//     const [statesid, setStatesid] = useState(ls.states);
+
+//     const [cities, setCities] = useState([]);
+//     const [citiesid, setCitiesid] = useState(ls.cities);
+
+//     useEffect(() => {
+//         axios
+//             .get(`http://127.0.0.1:8000/api/dropdown/${ls.id}`)
+//             .then((response) => {
+//                 setDropdownData(response.data);
+//                 fetchStates(response.data.countries_id); // Fetch states for selected country
+//                 fetchCities(response.data.states_id);   // Fetch cities for selected state
+//             })
+//             .catch((error) => {
+//                 console.error("There was an error fetching the data!", error);
+//             });
+//     }, [ls.id]);
+
+//     const fetchCountries = async () => {
+//         const rescountry = await apiLaravel("/countries");
+//         setCountries(await rescountry);
+//     };
+
+//     const fetchStates = async (countryId) => {
+//         const resstate = await fetch(
+//             `http://127.0.0.1:8000/api/states/${countryId}`
+//         );
+//         const reset = await resstate.json();
+//         setStates(reset);
+//     };
+
+//     const fetchCities = async (stateId) => {
+//         const rescity = await fetch(
+//             `http://127.0.0.1:8000/api/cities/${stateId}`
+//         );
+//         const reset = await rescity.json();
+//         setCities(reset);
+//     };
+
+//     const handleCountryChange = async (e) => {
+//         setStates([]);
+//         setStatesid("0");
+//         setCities([]);
+//         const getcountriesid = e.target.value;
+//         setCountriesid(getcountriesid);
+
+//         fetchStates(getcountriesid);
+//     };
+
+//     const handleStateChange = async (e) => {
+//         setCitiesid("0");
+//         const getstatesid = e.target.value;
+//         setStatesid(getstatesid);
+
+//         fetchCities(getstatesid);
+//     };
+
+//     const handleCityChange = (e) => {
+//         const getcitiesid = e.target.value;
+//         setCitiesid(getcitiesid);
+//     };
+
+//     async function update(id) {
+//         let item = {
+//             countriesid,
+//             statesid,
+//             citiesid,
+//         };
+//         let response = await apiLaravel("/update/" + id, {
+//             method: "POST",
+//             body: JSON.stringify(item),
+//         });
+
+//         if (response.status === false) {
+//             setErrors(response.error);
+//             setMessage(response.message);
+//         } else {
+//             setErrors({});
+//             setMessage("User updated successfully.");
+//             setTimeout(() => {
+//                 localStorage.setItem("user-info", JSON.stringify(response.data));
+//                 navigate("/welcome");
+//             }, 1000);
+//         }
+//     }
+
+//     useEffect(() => {
+//         fetchCountries();
+//     }, []);
+
+//     if (!dropdownData) {
+//         return (
+//             <div>
+//                 <Header />
+//                 <div className="container my-5">
+//                     <h1>Profile Form</h1>
+//                     <h3 className="fw-bold">Loading...</h3>
+//                 </div>
+//             </div>
+//         );
+//     }
+
+//     return (
+//         <>
+//             <Header />
+
+//             {message && (
+//                 <div>
+//                     <div className="alert alert-info alert-dismissible fade show" role="alert">
+//                         {message}
+//                         <button
+//                             type="button"
+//                             className="btn-close"
+//                             data-bs-dismiss="alert"
+//                             aria-label="Close"
+//                         ></button>
+//                     </div>
+//                 </div>
+//             )}
+
+//             <div className="container my-5">
+//                 <h1>Profile Form</h1>
+
+//                 <form>
+
+//                     <div className="mb-3">
+//                         <label htmlFor="country" className="form-label">
+//                             Country
+//                         </label>
+//                         <select
+//                             className="form-control"
+//                             name="countries"
+//                             id="countries"
+//                             onChange={(e) => handleCountryChange(e)}
+//                         >
+
+
+//                             <option value="0">Select Country</option>
+//                             {countries.map((getcon, index) => (
+//                                 <option key={index} value={getcon.countries_id}>
+//                                     {getcon.countries_name}
+//                                 </option>
+//                             ))}
+//                         </select>
+//                         {errors.countriesid && (
+//                             <div className="text-danger">{errors.countriesid}</div>
+//                         )}
+//                     </div>
+
+//                     <div className="mb-3">
+//                         <label htmlFor="state" className="form-label">
+//                             State
+//                         </label>
+//                         <select
+//                             className="form-control"
+//                             name="states"
+//                             id="states"
+//                             onChange={(e) => handleStateChange(e)}
+//                         >
+
+//                             <option value="0">Select State</option>
+//                             {states.map((getstate, index) => (
+//                                 <option key={index} value={getstate.states_id}>
+//                                     {getstate.states_name}
+//                                 </option>
+//                             ))}
+//                         </select>
+//                         {errors.statesid && (
+//                             <div className="text-danger">{errors.statesid}</div>
+//                         )}
+//                     </div>
+
+//                     <div className="mb-3">
+//                         <label htmlFor="city" className="form-label">
+//                             City
+//                         </label>
+//                         <select
+//                             className="form-control"
+//                             name="cities"
+//                             id="cities"
+//                             onChange={(e) => handleCityChange(e)}
+//                         >
+
+//                             <option value="0">Select City</option>
+//                             {cities.map((getcities, index) => (
+//                                 <option key={index} value={getcities.cities_id}>
+//                                     {getcities.cities_name}
+//                                 </option>
+//                             ))}
+//                         </select>
+//                         {errors.citiesid && (
+//                             <div className="text-danger">{errors.citiesid}</div>
+//                         )}
+//                     </div>
+
+//                     <button
+//                         type="button"
+//                         onClick={() => update(ls.id)}
+//                         className="btn btn-primary me-2"
+//                     >
+//                         Update
+//                     </button>
+
+//                     <button type="button" className="btn btn-danger">
+//                         Reset
+//                     </button>
+//                 </form>
+//             </div>
+//         </>
+//     );
+// }
+
+// export default Test;
+
+
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { apiLaravel } from "../Utils/Apiurl";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function Registers() {
+function Test() {
+    let ls = JSON.parse(localStorage.getItem("user-info"));
+
     const navigate = useNavigate();
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirm_password, setConfirm_password] = useState("");
-
+    const [dropdownData, setDropdownData] = useState(null);
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState("");
 
     const [countries, setCountries] = useState([]);
-    const [countriesid, setCountriesid] = useState("0");
+    const [countriesid, setCountriesid] = useState(ls.countries);
 
     const [states, setStates] = useState([]);
-    const [statesid, setStatesid] = useState("0");
+    const [statesid, setStatesid] = useState(ls.states);
 
     const [cities, setCities] = useState([]);
-    const [citiesid, setCitiesid] = useState("0");
+    const [citiesid, setCitiesid] = useState(ls.cities);
 
-    const validate = () => {
-        const newErrors = {};
-
-        if (!name) {
-            newErrors.name = "Username is required";
-        }
-
-        if (!email) {
-            newErrors.email = "Email is required";
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            newErrors.email = "Email address is invalid";
-        }
-
-        if (!password) {
-            newErrors.password = "Password is required";
-        } else if (password.length < 4) {
-            newErrors.password = "Password must be at minimum 4 characters";
-        } else if (password.length > 8) {
-            newErrors.password = "Password must be at maximum 8 characters";
-        }
-
-        if (!confirm_password) {
-            newErrors.confirm_password = "Confirm Password is required";
-        } else if (password !== confirm_password) {
-            newErrors.confirm_password = "Passwords do not match";
-        }
-
-        return newErrors;
-    };
+    useEffect(() => {
+        axios
+            .get(`http://127.0.0.1:8000/api/dropdown/${ls.id}`)
+            .then((response) => {
+                setDropdownData(response.data);
+                fetchStates(response.data.countries_id); // Fetch states for selected country
+                fetchCities(response.data.states_id);   // Fetch cities for selected state
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the data!", error);
+            });
+    }, [ls.id]);
 
     const fetchCountries = async () => {
         const rescountry = await apiLaravel("/countries");
         setCountries(await rescountry);
     };
 
-    const handleCountryChange = async (e) => {
-        const getcountriesid = e.target.value;
-        setCountriesid(getcountriesid);
-
+    const fetchStates = async (countryId) => {
         const resstate = await fetch(
-            `http://127.0.0.1:8000/api/states/${getcountriesid}`
+            `http://127.0.0.1:8000/api/states/${countryId}`
         );
         const reset = await resstate.json();
         setStates(reset);
-        setStatesid("0"); // Reset states selection
-        setCities([]); // Reset cities selection
     };
 
-    const handleStateChange = async (e) => {
-        const getstatesid = e.target.value;
-        setStatesid(getstatesid);
-
+    const fetchCities = async (stateId) => {
         const rescity = await fetch(
-            `http://127.0.0.1:8000/api/cities/${getstatesid}`
+            `http://127.0.0.1:8000/api/cities/${stateId}`
         );
         const reset = await rescity.json();
         setCities(reset);
-        setCitiesid("0"); // Reset cities selection
+    };
+
+    const handleCountryChange = async (e) => {
+        setStates([]);
+        setStatesid("0");
+        setCities([]);
+        const getcountriesid = e.target.value;
+        setCountriesid(getcountriesid);
+
+        fetchStates(getcountriesid);
+    };
+
+    const handleStateChange = async (e) => {
+        setCitiesid("0");
+        const getstatesid = e.target.value;
+        setStatesid(getstatesid);
+
+        fetchCities(getstatesid);
     };
 
     const handleCityChange = (e) => {
@@ -88,97 +313,68 @@ function Registers() {
         setCitiesid(getcitiesid);
     };
 
-    async function signUp() {
-        const validationErrors = validate();
-        if (Object.keys(validationErrors).length === 0) {
-            let item = {
-                name,
-                email,
-                countriesid,
-                statesid,
-                citiesid,
-                password,
-                confirm_password,
-            };
-            let response = await apiLaravel("/register", {
-                method: "POST",
-                body: JSON.stringify(item),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+    async function update(id) {
+        let item = {
+            countriesid,
+            statesid,
+            citiesid,
+        };
+        let response = await apiLaravel("/update/" + id, {
+            method: "POST",
+            body: JSON.stringify(item),
+        });
 
-            if (!response.ok) {
-                const responseData = await response.json();
-                setErrors(responseData.error);
-                setMessage(responseData.message);
-            } else {
-                setErrors({});
-                setMessage("User registered successfully.");
-                setTimeout(() => {
-                    navigate("/login");
-                }, 1000);
-            }
+        if (response.status === false) {
+            setErrors(response.error);
+            setMessage(response.message);
         } else {
-            setErrors(validationErrors);
+            setErrors({});
+            setMessage("User updated successfully.");
+            setTimeout(() => {
+                localStorage.setItem("user-info", JSON.stringify(response.data));
+                navigate("/welcome");
+            }, 1000);
         }
-    }
-
-    function reset() {
-        setName("");
-        setEmail("");
-        setPassword("");
-        setConfirm_password("");
-        setErrors({});
-        setMessage("");
-        setCountriesid("0");
-        setStates([]);
-        setStatesid("0");
-        setCities([]);
-        setCitiesid("0");
     }
 
     useEffect(() => {
         fetchCountries();
     }, []);
 
+    if (!dropdownData) {
+        return (
+            <div>
+                <Header />
+                <div className="container my-5">
+                    <h1>Profile Form</h1>
+                    <h3 className="fw-bold">Loading...</h3>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <Header />
 
-            {message && <div className="alert alert-info">{message}</div>}
-            <div className="container my-5">
-                <h1>Register Form</h1>
-                <form>
-                    <div className="mb-3">
-                        <label htmlFor="name" className="form-label">
-                            Username
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            name="name"
-                            id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                        {errors.name && <div className="text-danger">{errors.name}</div>}
+            {message && (
+                <div>
+                    <div className="alert alert-info alert-dismissible fade show" role="alert">
+                        {message}
+                        <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
                     </div>
+                </div>
+            )}
 
-                    <div className="mb-3">
-                        <label htmlFor="email" className="form-label">
-                            Email
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            name="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        {errors.email && <div className="text-danger">{errors.email}</div>}
-                    </div>
+            <div className="container my-5">
+                <h1>Profile Form</h1>
+
+                <form>
 
                     <div className="mb-3">
                         <label htmlFor="country" className="form-label">
@@ -188,7 +384,8 @@ function Registers() {
                             className="form-control"
                             name="countries"
                             id="countries"
-                            onChange={handleCountryChange}
+                            value={countriesid}
+                            onChange={(e) => handleCountryChange(e)}
                         >
                             <option value="0">Select Country</option>
                             {countries.map((getcon, index) => (
@@ -197,8 +394,8 @@ function Registers() {
                                 </option>
                             ))}
                         </select>
-                        {errors.countries && (
-                            <div className="text-danger">{errors.countries}</div>
+                        {errors.countriesid && (
+                            <div className="text-danger">{errors.countriesid}</div>
                         )}
                     </div>
 
@@ -210,18 +407,18 @@ function Registers() {
                             className="form-control"
                             name="states"
                             id="states"
-                            onChange={handleStateChange}
+                            value={statesid}
+                            onChange={(e) => handleStateChange(e)}
                         >
                             <option value="0">Select State</option>
-
                             {states.map((getstate, index) => (
                                 <option key={index} value={getstate.states_id}>
                                     {getstate.states_name}
                                 </option>
                             ))}
                         </select>
-                        {errors.states && (
-                            <div className="text-danger">{errors.states}</div>
+                        {errors.statesid && (
+                            <div className="text-danger">{errors.statesid}</div>
                         )}
                     </div>
 
@@ -233,84 +430,36 @@ function Registers() {
                             className="form-control"
                             name="cities"
                             id="cities"
-                            onChange={handleCityChange}
+                            value={citiesid}
+                            onChange={(e) => handleCityChange(e)}
                         >
                             <option value="0">Select City</option>
-
                             {cities.map((getcities, index) => (
                                 <option key={index} value={getcities.cities_id}>
                                     {getcities.cities_name}
                                 </option>
                             ))}
                         </select>
-                        {errors.cities && (
-                            <div className="text-danger">{errors.cities}</div>
-                        )}
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="password" className="form-label">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            name="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        {errors.password && (
-                            <div className="text-danger">{errors.password}</div>
-                        )}
-                    </div>
-
-                    <div className="mb-3">
-                        <label htmlFor="confirm_password" className="form-label">
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            name="confirm_password"
-                            id="confirm_password"
-                            value={confirm_password}
-                            onChange={(e) => setConfirm_password(e.target.value)}
-                        />
-                        {errors.confirm_password && (
-                            <div className="text-danger">{errors.confirm_password}</div>
+                        {errors.citiesid && (
+                            <div className="text-danger">{errors.citiesid}</div>
                         )}
                     </div>
 
                     <button
                         type="button"
-                        onClick={signUp}
+                        onClick={() => update(ls.id)}
                         className="btn btn-primary me-2"
                     >
-                        Sign Up
+                        Update
                     </button>
 
-                    <button type="button" onClick={reset} className="btn btn-danger">
+                    <button type="button" className="btn btn-danger">
                         Reset
                     </button>
-
-                    <p className="mt-2">
-                        You already Register Now you can{" "}
-                        <Link className="link" to="/login">
-                            Sign In
-                        </Link>
-                    </p>
                 </form>
             </div>
         </>
     );
 }
 
-export default Registers;
-
-
-
-
-///////////////////////////////////
-
-
+export default Test;
