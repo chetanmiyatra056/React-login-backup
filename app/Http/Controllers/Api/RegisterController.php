@@ -17,6 +17,7 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:users',
             'email' => 'required|unique:users|regex:/(.+)@(.+)\.(.+)/i',
+            'options' => 'required',
             'countriesid' => 'required',
             'statesid' => 'required',
             'citiesid' => 'required',
@@ -37,6 +38,7 @@ class RegisterController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = Hash::make($request->input('password'));
+        $user->hobbies = implode(',', $request->input("options"));
         $user->countries = $request->input('countriesid');
         $user->states = $request->input('statesid');
         $user->cities = $request->input('citiesid');
