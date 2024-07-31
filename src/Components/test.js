@@ -27,8 +27,8 @@ function Test() {
             .get(`http://127.0.0.1:8000/api/dropdown/${ls.id}`)
             .then((response) => {
                 setDropdownData(response.data);
-                fetchStates(response.data.countries_id); // Fetch states for selected country
-                fetchCities(response.data.states_id);   // Fetch cities for selected state
+                fetchStates(response.data.countries_id);
+                fetchCities(response.data.states_id);
             })
             .catch((error) => {
                 console.error("There was an error fetching the data!", error);
