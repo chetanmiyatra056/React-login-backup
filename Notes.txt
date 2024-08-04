@@ -1,0 +1,55 @@
+// Laravel API
+
+
+
+// Create Controllers
+
+php artisan make:controller Api\TestController
+
+php artisan make:controller Api\UserController
+
+php artisan make:controller Api\ReactController
+
+php artisan make:controller Api\RegisterController
+
+php artisan make:controller Api\LoginController
+
+php artisan make:controller Api\UpdateController
+
+php artisan make:controller Api\PasswordController
+
+php artisan make:controller Api\DropDownController
+
+php artisan make:controller Api\AllUsersController
+
+
+
+// Add Migration
+
+php artisan make:migration create_countries_table
+
+php artisan make:migration create_states_table
+
+php artisan make:migration create_cities_table
+
+php artisan make:migration add_countries_field_to_users
+
+php artisan make:migration add_hobbies_gender_field_to_users
+
+php artisan make:migration add_date_field_to_users
+
+php artisan make:migration add_type_file_field_to_users
+
+
+
+// Create Model
+
+php artisan make:model Countries
+
+php artisan make:model States
+
+php artisan make:model Cities
+
+
+
+
