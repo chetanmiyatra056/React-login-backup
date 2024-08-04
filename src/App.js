@@ -50,10 +50,10 @@ function App() {
 
             <Route path="/password" element={<Password />} />
 
-            <Route path="/lists" element={<Lists />} />
-
             <Route path="/demo update" element={<Demo />} />
           </Route>
+
+          <Route path="/lists" element={<Lists />} />
         </Routes>
 
         <Footer />

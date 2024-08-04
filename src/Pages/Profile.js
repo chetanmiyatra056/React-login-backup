@@ -23,21 +23,23 @@ function Profile() {
 
   const [countries, setCountries] = useState([]);
   const [countriesid, setCountriesid] = useState(ls.countries);
-  
+
   const [states, setStates] = useState([]);
   const [statesid, setStatesid] = useState(ls.states);
-  
+
   const [cities, setCities] = useState([]);
   const [citiesid, setCitiesid] = useState(ls.cities);
 
   const [selectedHobbies, setSelectedHobbies] = useState([]);
   const hobbies = ["Reading", "Writting", "Gaming"];
-  
+
   const [gender, setGender] = useState(ls.gender);
 
   const [selectDate, setSelectDate] = useState(null);
 
   const [userType, setUserType] = useState(ls.type);
+
+  const [file, setFile] = useState(null);
 
 
   useEffect(() => {
@@ -113,7 +115,17 @@ function Profile() {
     setCitiesid(getcitiesid);
   };
 
+  async function convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function update(id) {
+    const fileBase64 = await convertFileToBase64(file);
     let item = {
       name,
       email,
@@ -124,6 +136,7 @@ function Profile() {
       statesid,
       citiesid,
       userType,
+      file: fileBase64,
     };
     let response = await apiLaravel("/update/" + id, {
       method: "POST",
@@ -398,6 +411,31 @@ function Profile() {
             {errors.userType && (
               <div className="text-danger">{errors.userType}</div>
             )}
+          </div>
+
+          {/* File filed */}
+          {ls.profile ? (
+            <div className="form-group mb-3">
+              <label htmlFor="img">Profile</label><br />
+              <img
+                src={`http://127.0.0.1:8000/uploads/${ls.profile}`}
+                alt="User Profile"
+                style={{ width: "100px", height: "100px", border: "2px solid black" }}
+              />
+            </div>
+          ) : (
+            <p>Loading...</p>
+          )}
+          <div className="form-group mb-3">
+            <label htmlFor="profile" className="form-label">
+              Choose New Profile
+            </label>
+            <input
+              className="form-control"
+              type="file"
+              name="file"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
           </div>
 
           {/* Update Button */}

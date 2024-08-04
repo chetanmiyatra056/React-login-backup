@@ -65,12 +65,6 @@ export default function Header() {
                     </Link>
                   </li>
 
-                  <li className="nav-item">
-                    <Link className="nav-link active" to="/lists">
-                      Lists
-                    </Link>
-                  </li>
-
                   {/* <li className="nav-item">
                     <Link className="nav-link active" to="/demo update">
                       Demo Update
@@ -94,6 +88,11 @@ export default function Header() {
                   </li>
                 </>
               )}
+              <li className="nav-item">
+                <Link className="nav-link active" to="/lists">
+                  Lists
+                </Link>
+              </li>
             </ul>
 
             <form className="d-flex">

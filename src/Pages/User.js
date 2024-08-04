@@ -66,10 +66,19 @@ export default function User() {
             <hr />
 
             <div>
+              <h3>Profile :-  <img
+                src={`http://127.0.0.1:8000/uploads/${users.profile}`}
+                alt="User Profile"
+                style={{ width: "50px", border: "2px solid black" }}
+              /></h3>
+            </div>
+            <hr />
+
+            <div>
               <h3>Type :- {users.type}</h3>
             </div>
             <hr />
-            
+
             <div>
               <h3>Email :- {users.email}</h3>
             </div>

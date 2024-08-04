@@ -39,9 +39,9 @@ function Lists() {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {users.map((user, index) => (
               <tr key={user.id}>
-                <td>{user.id}</td>
+                <td>{index + 1}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.countries}</td>
@@ -51,7 +51,13 @@ function Lists() {
                 <td>{user.gender}</td>
                 <td>{user.date}</td>
                 <td>{user.type}</td>
-                <td>Null</td>
+                <td>
+                  <img
+                    src={`http://127.0.0.1:8000/uploads/${user.profile}`}
+                    alt="User Profile"
+                    style={{ width: "50px", border: "2px solid black" }}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
