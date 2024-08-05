@@ -65,11 +65,11 @@ export default function Header() {
                     </Link>
                   </li>
 
-                  {/* <li className="nav-item">
+                  <li className="nav-item">
                     <Link className="nav-link active" to="/demo update">
                       Demo Update
                     </Link>
-                  </li> */}
+                  </li>
                 </>
               ) : (
                 <>

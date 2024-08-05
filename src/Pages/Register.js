@@ -94,6 +94,18 @@ function Register() {
     if (userType === "0") {
       newErrors.userType = "Type is required";
     }
+    if (!file) {
+      newErrors.file = "Profile picture is required";
+    } else {
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!allowedTypes.includes(file.type)) {
+        newErrors.file = "Only JPEG, PNG and GIF files are allowed";
+      }
+      const maxSize = 1 * 1024 * 1024; // 1MB
+      if (file.size > maxSize) {
+        newErrors.file = "File size must be less than 1MB";
+      }
+    }
 
     return newErrors;
   };
@@ -479,6 +491,9 @@ function Register() {
               name="file"
               onChange={(e) => setFile(e.target.files[0])}
             />
+            {errors.file && (
+              <div className="text-danger">{errors.file}</div>
+            )}
           </div>
 
           {/* Submit button */}
