@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\ReactController;
 use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\UpdateController;
 use App\Http\Controllers\Api\UserController;
@@ -37,34 +38,38 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // React Login APIs
 
-Route::post('/register',[RegisterController::class ,'register']);
+Route::post('/register', [RegisterController::class, 'register']);
 
-Route::post('/login',[LoginController::class ,'login']);
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/user/{user}',[UpdateController::class ,'getuser']);
+Route::get('/user/{user}', [UpdateController::class, 'getuser']);
 
-Route::post('/update/{user}',[UpdateController::class ,'update']);
+Route::post('/update/{user}', [UpdateController::class, 'update']);
 
-Route::post('/upassword/{user}',[PasswordController::class ,'upassword']);
+Route::post('/upassword/{user}', [PasswordController::class, 'upassword']);
 
-Route::get('/allshow',[AllUsersController::class ,'allshow']);
+Route::get('/allshow', [AllUsersController::class, 'allshow']);
+
+Route::get('/search', [SearchController::class, 'search']);
+
+// Route::get('/search/{key}', [SearchController::class, 'search']);
 
 
 // Countries, States and Cities DropDown Apis
 
-Route::get('/countries',[DropDownController::class ,'countries']);
+Route::get('/countries', [DropDownController::class, 'countries']);
 
-Route::get('/states/{states}',[DropDownController::class,'states']);
+Route::get('/states/{states}', [DropDownController::class, 'states']);
 
-Route::get('/cities/{cities}',[DropDownController::class,'cities']);
+Route::get('/cities/{cities}', [DropDownController::class, 'cities']);
 
 
 // Edit Countries, States and Cities DropDown Apis
 
-Route::get('/dropdown/{id}',[DropDownController::class ,'dropdown']);
+Route::get('/dropdown/{id}', [DropDownController::class, 'dropdown']);
 
-Route::get('/country/{id}',[DropDownController::class ,'country']);
+Route::get('/country/{id}', [DropDownController::class, 'country']);
 
-Route::get('/state/{id}',[DropDownController::class,'state']);
+Route::get('/state/{id}', [DropDownController::class, 'state']);
 
-Route::get('/city/{id}',[DropDownController::class,'city']);
+Route::get('/city/{id}', [DropDownController::class, 'city']);

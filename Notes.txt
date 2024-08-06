@@ -22,6 +22,8 @@ php artisan make:controller Api\DropDownController
 
 php artisan make:controller Api\AllUsersController
 
+php artisan make:controller Api\SearchController
+
 
 
 // Add Migration
